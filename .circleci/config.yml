@@ -1,6 +1,10 @@
 version: 2
 jobs:
   build:
+    general:
+      branches:
+        only:
+         - develop # list of branches to build
     docker:
       - image: circleci/python:3.5.6-browsers-legacy
     steps:
