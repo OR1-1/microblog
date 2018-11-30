@@ -10,3 +10,8 @@ jobs:
     steps:
       - checkout
       - run: echo "A first hello"
+      - run:
+         name: Code Has Arrived
+         command: |
+           ls -al
+           echo '^^^That should look familiar^^^'
