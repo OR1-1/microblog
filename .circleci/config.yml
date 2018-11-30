@@ -1,21 +1,67 @@
 version: 2
 jobs:
-  build:
-    general:
-      branches:
-        only:
-         - develop # list of branches to build
+  Build:
+    # general:
+    #   branches:
+    #     only:
+    #      - develop # list of branches to build
     docker:
       - image: circleci/python:3.5.6-browsers-legacy
     steps:
-      - checkout
+      # - checkout
       - run: echo "A first hello"
-      - run:
-         name: Code Has Arrived
+      # - run:
+      #    name: Code Has Arrived
+      #    command: |
+      #      ls -al
+      #      echo '^^^That should look familiar^^^'
+      # - run:
+      #    name: Running in a Unique Container
+      #    command: |
+      #      python --version
+  I-Have-Code:
+    docker:
+     - image: circleci/python:3.5.6-browsers-legacy
+    steps:
+     - checkout
+     - run:
+        name: Code Has Arrived
+        command: |
+         ls -al
+         echo '^^^That should look familiar^^^'
+  Run-With-Node:
+   docker:
+     - image: circleci/python:3.5.6-browsers-legacy
+   steps:
+     - run:
+        name: Running in a Unique Container
+        command: |
+          python --version
+  Now-Complete:
+   docker:
+     - image: circleci/python:3.5.6-browsers-legacy
+   steps:
+     - run:
+         name: Approval Complete
          command: |
-           ls -al
-           echo '^^^That should look familiar^^^'
-      - run:
-         name: Running in a Unique Container
-         command: |
-           python --version
+           echo 'Do work once the approval has completed'
+
+workflows:
+ version: 2
+ Example_Workflow:
+   jobs:
+     - Build
+     - I-Have-Code:
+         requires:
+           - Hello-World
+     - Run-With-Node:
+         requires:
+           - Hello-World
+     - Hold-For-Approval:
+         type: approval
+         requires:
+           - Run-With-Node
+           - I-Have-Code
+     - Now-Complete:
+         requires:
+           - Hold-For-Approval
