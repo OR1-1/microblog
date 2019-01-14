@@ -9,19 +9,23 @@ jobs:
       - image: circleci/python:3.5.6-browsers-legacy
     steps:
       - checkout
-      - run: whoami
+      - run: pip install --user virtualenv
       - run:
           name: run virtual python environment
           command: |
-              pwd
-              ls -la
-              # source mblog-venv/bin/activate
+              virtualenv mblog-venv
+              source mblog-venv/bin/activate
+              sudo pip install -r requirements.txt
 
   Deploy:
     docker:
       - image: circleci/python:3.5.6-browsers-legacy
     steps:
+      # - [ssh into cloud flask-server]
       - checkout
+      - run: export FLASK_APP=microblog.py
+      - run: flask run --host=0.0.0.0
+
 
   Run-With-Node:
    docker:
