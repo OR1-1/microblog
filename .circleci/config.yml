@@ -1,34 +1,25 @@
 version: 2
 jobs:
   Build:
-    # general:
-    #   branches:
-    #     only:
-    #      - develop # list of branches to build
+    general:
+      branches:
+        only:
+         - develop # list of branches to build
     docker:
       - image: circleci/python:3.5.6-browsers-legacy
     steps:
       - checkout
-      - run: echo "A first hello"
-      # - run:
-      #    name: Code Has Arrived
-      #    command: |
-      #      ls -al
-      #      echo '^^^That should look familiar^^^'
-      # - run:
-      #    name: Running in a Unique Container
-      #    command: |
-      #      python --version
-  I-Have-Code:
+      # - run: echo "A first hello"
+  Deploy:
     docker:
      - image: circleci/python:3.5.6-browsers-legacy
     steps:
-     - checkout
+    #  - checkout
      - run:
-        name: Code Has Arrived
-        command: |
-         ls -al
-         echo '^^^That should look familiar^^^'
+         name: run virtual python environment
+         command: |
+           cd microblog
+           source mblog-venv/bin/activate
   Run-With-Node:
    docker:
      - image: circleci/python:3.5.6-browsers-legacy
@@ -51,9 +42,9 @@ workflows:
  Example_Workflow:
    jobs:
      - Build
-    #  - I-Have-Code:
-    #      requires:
-    #        - Build
+     - Deploy:
+         requires:
+           - Build
     #  - Run-With-Node:
     #      requires:
     #        - Build
@@ -61,7 +52,7 @@ workflows:
     #      type: approval
     #      requires:
     #        - Run-With-Node
-    #        - I-Have-Code
+    #        - Deploy
     #  - Now-Complete:
     #      requires:
     #        - Hold-For-Approval
