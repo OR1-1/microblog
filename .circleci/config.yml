@@ -19,6 +19,7 @@ jobs:
           name: run virtual python environment
           command: |
               pwd
+              ll -a
               # cd microblog
               # source mblog-venv/bin/activate
   Run-With-Node:
