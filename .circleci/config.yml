@@ -9,19 +9,20 @@ jobs:
       - image: circleci/python:3.5.6-browsers-legacy
     steps:
       - checkout
-      # - run: echo "A first hello"
-  Deploy:
-    docker:
-      - image: circleci/python:3.5.6-browsers-legacy
-    steps:
-      - checkout
+      - run: whoami
       - run:
           name: run virtual python environment
           command: |
               pwd
               ls -la
-              # cd microblog
               # source mblog-venv/bin/activate
+
+  Deploy:
+    docker:
+      - image: circleci/python:3.5.6-browsers-legacy
+    steps:
+      - checkout
+
   Run-With-Node:
    docker:
       - image: circleci/python:3.5.6-browsers-legacy
@@ -30,6 +31,7 @@ jobs:
           name: Running in a Unique Container
           command: |
             python --version
+
   Now-Complete:
    docker:
      - image: circleci/python:3.5.6-browsers-legacy
@@ -44,9 +46,9 @@ workflows:
  Example_Workflow:
    jobs:
       - Build
-      - Deploy:
-          requires:
-            - Build
+      # - Deploy:
+      #     requires:
+      #       - Build
     #  - Run-With-Node:
     #      requires:
     #        - Build
